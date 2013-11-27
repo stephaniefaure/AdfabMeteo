@@ -5,6 +5,7 @@ namespace AdfabMeteoTest\Mapper;
 use AdfabMeteo\Entity\WeatherDailyOccurrence;
 use AdfabMeteo\Entity\WeatherHourlyOccurrence;
 use AdfabMeteoTest\Bootstrap;
+use DateTime;
 
 class WeatherHourlyOccurrenceTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,9 +26,18 @@ class WeatherHourlyOccurrenceTest extends \PHPUnit_Framework_TestCase
     {
         $dailyOccurrence = new WeatherDailyOccurrence();
         $dailyOccurrence->setId(1);
+        $dailyOccurrence->setCity(1);
+        $dailyOccurrence->setForecast(true);
+        $dailyOccurrence->setDate(new DateTime());
+        $dailyOccurrence->setMinTemperature(5);
+        $dailyOccurrence->setMaxTemperature(30);
+        $dailyOccurrence->setWeatherCode(4);
 
         $hourlyOccurrence = new WeatherHourlyOccurrence();
-        $hourlyOccurrence->setId(1);
+        $hourlyOccurrence->setTime(new DateTime(date('H:i:s')));
+        $hourlyOccurrence->setTemperature(30);
+        $hourlyOccurrence->setWeatherCode(2);
+        $hourlyOccurrence->setDailyOccurrence($dailyOccurrence);
         $this->tm->insert($hourlyOccurrence);
 
         $this->assertEquals($hourlyOccurrence, current($this->tm->findByDailyOccurrence($dailyOccurrence)));

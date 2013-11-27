@@ -1,23 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="adfabmeteo" tests="1" assertions="0" failures="0" errors="1" time="0.091565">
-    <testsuite name="AdfabMeteoTest\Mapper\WeatherHourlyOccurrenceTest" file="/home/stephanie/www/zendpariez/module/AdfabMeteo/tests/AdfabMeteoTest/Mapper/WeatherHourlyOccurrenceTest.php" namespace="AdfabMeteoTest\Mapper" fullPackage="AdfabMeteoTest.Mapper" tests="1" assertions="0" failures="0" errors="1" time="0.091565">
-      <testcase name="testFindByDailyOccurrence" class="AdfabMeteoTest\Mapper\WeatherHourlyOccurrenceTest" file="/home/stephanie/www/zendpariez/module/AdfabMeteo/tests/AdfabMeteoTest/Mapper/WeatherHourlyOccurrenceTest.php" line="24" assertions="0" time="0.091565">
-        <error type="Zend\ServiceManager\Exception\ServiceNotCreatedException">AdfabMeteoTest\Mapper\WeatherHourlyOccurrenceTest::testFindByDailyOccurrence
-Zend\ServiceManager\Exception\ServiceNotCreatedException: An exception was raised while creating "adfabmeteo_weatherhourlyoccurrence_mapper"; no instance returned
-
-/home/stephanie/www/zendpariez/vendor/zendframework/zendframework/library/Zend/ServiceManager/ServiceManager.php:904
-/home/stephanie/www/zendpariez/module/AdfabMeteo/src/AdfabMeteo/Mapper/WeatherHourlyOccurrence.php:19
-/home/stephanie/www/zendpariez/module/AdfabMeteo/src/AdfabMeteo/Module.php:93
-/home/stephanie/www/zendpariez/vendor/zendframework/zendframework/library/Zend/ServiceManager/ServiceManager.php:897
-/home/stephanie/www/zendpariez/vendor/zendframework/zendframework/library/Zend/ServiceManager/ServiceManager.php:1029
-/home/stephanie/www/zendpariez/vendor/zendframework/zendframework/library/Zend/ServiceManager/ServiceManager.php:601
-/home/stephanie/www/zendpariez/vendor/zendframework/zendframework/library/Zend/ServiceManager/ServiceManager.php:561
-/home/stephanie/www/zendpariez/vendor/zendframework/zendframework/library/Zend/ServiceManager/ServiceManager.php:503
-/home/stephanie/www/zendpariez/module/AdfabMeteo/tests/AdfabMeteoTest/Mapper/WeatherHourlyOccurrenceTest.php:17
-/home/stephanie/www/zendpariez/vendor/phpunit/phpunit/composer/bin/phpunit:63
-</error>
-      </testcase>
+  <testsuite name="adfabmeteo" tests="1" assertions="1" failures="0" errors="0" time="1.225736">
+    <testsuite name="AdfabMeteoTest\Mapper\WeatherHourlyOccurrenceTest" file="/home/stephanie/www/zendpariez/module/AdfabMeteo/tests/AdfabMeteoTest/Mapper/WeatherHourlyOccurrenceTest.php" namespace="AdfabMeteoTest\Mapper" fullPackage="AdfabMeteoTest.Mapper" tests="1" assertions="1" failures="0" errors="0" time="1.225736">
+      <testcase name="testFindByDailyOccurrence" class="AdfabMeteoTest\Mapper\WeatherHourlyOccurrenceTest" file="/home/stephanie/www/zendpariez/module/AdfabMeteo/tests/AdfabMeteoTest/Mapper/WeatherHourlyOccurrenceTest.php" line="25" assertions="1" time="1.225736"/>
     </testsuite>
   </testsuite>
 </testsuites>

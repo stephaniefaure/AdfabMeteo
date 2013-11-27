@@ -14,9 +14,9 @@ class WeatherDailyOccurrence
      */
     protected $er;
 
-    public function __construct(EntityManager $em)
+    public function __construct(\Doctrine\ORM\EntityManager $em)
     {
-        parent::__construct($em);
+        $this->em      = $em;
     }
 
     public function getEntityRepository()

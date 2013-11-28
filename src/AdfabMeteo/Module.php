@@ -78,9 +78,18 @@ class Module
             ),
 
             'invokables' => array(
+                'adfabmeteo_weatherlocation_service' => 'AdfabMeteo\Service\WeatherLocation',
+                'adfabmeteo_weatherdatayield_service' => 'AdfabMeteo\Service\WeatherDataYield',
+                'adfabmeteo_weatherdatause_service' => 'AdfabMeteo\Service\WeatherDataUse',
             ),
 
             'factories' => array(
+                'adfabmeteo_weatherlocation_mapper' => function ($sm) {
+                    $mapper = new Mapper\WeatherLocation(
+                        $sm->get('doctrine.entitymanager.orm_default')
+                    );
+                    return $mapper;
+                },
                 'adfabmeteo_weatherdailyoccurrence_mapper' => function ($sm) {
                     $mapper = new Mapper\WeatherDailyOccurrence(
                         $sm->get('doctrine.entitymanager.orm_default')

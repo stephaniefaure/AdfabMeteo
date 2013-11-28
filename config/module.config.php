@@ -16,7 +16,8 @@ return array(
     ),
     'view_manager' => array(
         'template_path_stack' => array(
-            'AdfabMeteo' => __DIR__ . '/../views/'
+            __DIR__ . '/../views/admin',
+            __DIR__ . '/../views/frontend'
         ),
     ),
     'controllers' => array(

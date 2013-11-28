@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
 
 /**
  * @ORM\Entity @HasLifecycleCallbacks
- * @ORM\Table(name="weather_daily_occurrence", uniqueConstraints={@UniqueConstraint(name="unique_day_forecast", columns={"date", "city", "forecast"})})
+ * @ORM\Table(name="weather_daily_occurrence", uniqueConstraints={@UniqueConstraint(name="unique_day_forecast", columns={"date", "location_id", "forecast"})})
  */
 class WeatherDailyOccurrence implements InputFilterAwareInterface
 {
@@ -27,9 +27,10 @@ class WeatherDailyOccurrence implements InputFilterAwareInterface
     protected $date;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="WeatherLocation", inversedBy="WeatherDailyOccurrence", cascade={"persist","remove"})
+     * @ORM\JoinColumn(name="location_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    protected $city;
+    protected $location;
 
     /**
      * @ORM\Column(type="decimal")
@@ -84,14 +85,14 @@ class WeatherDailyOccurrence implements InputFilterAwareInterface
         return $this;
     }
 
-    public function getCity()
+    public function getLocation()
     {
-        return $this->city;
+        return $this->location;
     }
 
-    public function setCity($city)
+    public function setLocation($location)
     {
-        $this->city = $city;
+        $this->location = $location;
         return $this;
     }
 
@@ -111,6 +112,11 @@ class WeatherDailyOccurrence implements InputFilterAwareInterface
         return $this->minTemperature;
     }
 
+    public function getMinTemperatureF()
+    {
+        return (1.8 * $this->minTemperature)+32;
+    }
+
     public function setMinTemperature($minTemperature)
     {
         $this->minTemperature = $minTemperature;
@@ -120,6 +126,11 @@ class WeatherDailyOccurrence implements InputFilterAwareInterface
     public function getMaxTemperature()
     {
         return $this->maxTemperature;
+    }
+
+    public function getMaxTemperatureF()
+    {
+        return (1.8 * $this->maxTemperature)+32;
     }
 
     public function setMaxTemperature($maxTemperature)
@@ -146,8 +157,8 @@ class WeatherDailyOccurrence implements InputFilterAwareInterface
      */
     public function populate($data = array())
     {
-        if (isset($data['city']) && $data['city'] != null) {
-            $this->city = $data['city'];
+        if (isset($data['location']) && $data['location'] != null) {
+            $this->location = $data['location'];
         }
         if (isset($data['weatherCode']) && $data['weatherCode'] != null) {
             $this->weatherCode = $data['weatherCode'];
@@ -171,7 +182,6 @@ class WeatherDailyOccurrence implements InputFilterAwareInterface
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
             $factory = new InputFactory();
-            $inputFilter = parent::getInputFilter();
 
             $inputFilter->add($factory->createInput(array('name' => 'id', 'required' => true, 'filters' => array(array('name' => 'Int'),),)));
 
@@ -184,7 +194,7 @@ class WeatherDailyOccurrence implements InputFilterAwareInterface
             )));
 
             $inputFilter->add($factory->createInput(array(
-                'name' => 'city',
+                'name' => 'location',
                 'required' => true,
             )));
 

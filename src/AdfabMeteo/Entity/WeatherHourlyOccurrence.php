@@ -109,6 +109,11 @@ class WeatherHourlyOccurrence implements InputFilterAwareInterface
         return $this->temperature;
     }
 
+    public function getTemperatureF()
+    {
+        return (1.8 * $this->temperature)+32;
+    }
+
     public function setTemperature($temperature)
     {
         $this->temperature = $temperature;

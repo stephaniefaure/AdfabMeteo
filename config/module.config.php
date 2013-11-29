@@ -61,4 +61,22 @@ return array(
             ),
         ),
     ),
+    // Templates associations with controllers actions
+    'core_layout' => array(
+        'frontend' => array(
+            'modules' => array(
+                'adfabmeteo' => array(
+                    'controllers' => array(
+                        'adfabmeteocontroller' => array(
+                            'actions' => array(
+                                'index' => array(
+                                    'layout' => 'adfab-meteo\index.phtml'
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    ),
 );

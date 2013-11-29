@@ -16,23 +16,12 @@ class AdfabMeteoController extends AbstractActionController
     {
         $viewModel = new ViewModel();
 
-        $api_config = $this->getServiceLocator()->get('Config');
-        $api_config = $api_config->modules;
-        var_dump($api_config);
-//         $api_config->accounts =  $api_config->accounts;
-//         $api_config->accounts->free =  $api_config->accounts->free;
-//         $api_config->accounts->free->key = 'aaaaaaaaaaaaaaaaaaaa';
-
-        $writer = new Zend\Config\Writer\PhpArray();
-        $writer->toFile($apiconfig);
-
-//         var_dump(json_encode(\AdfabMeteo\Module::getApiConfig()));
         return $viewModel;
     }
 
     public function getWeatherLocationService()
     {
-        if ($this->weatherLocationService event === null) {
+        if ($this->weatherLocationService === null) {
             $this->weatherLocationService = $this->getServiceLocator()->get('adfabmeteo_weatherlocation_service');
         }
         return $this->weatherLocationService;

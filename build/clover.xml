@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1385572425">
-  <project timestamp="1385572425">
-    <file name="/home/stephanie/www/zendpariez/module/AdfabMeteo/views/index.phtml">
-      <metrics loc="1" ncloc="1" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
-    </file>
-    <metrics files="1" loc="1" ncloc="1" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
-  </project>
-</coverage>

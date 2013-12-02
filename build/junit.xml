@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuites>
-  <testsuite name="adfabmeteo" tests="1" assertions="1" failures="0" errors="0" time="1.225736">
-    <testsuite name="AdfabMeteoTest\Mapper\WeatherHourlyOccurrenceTest" file="/home/stephanie/www/zendpariez/module/AdfabMeteo/tests/AdfabMeteoTest/Mapper/WeatherHourlyOccurrenceTest.php" namespace="AdfabMeteoTest\Mapper" fullPackage="AdfabMeteoTest.Mapper" tests="1" assertions="1" failures="0" errors="0" time="1.225736">
-      <testcase name="testFindByDailyOccurrence" class="AdfabMeteoTest\Mapper\WeatherHourlyOccurrenceTest" file="/home/stephanie/www/zendpariez/module/AdfabMeteo/tests/AdfabMeteoTest/Mapper/WeatherHourlyOccurrenceTest.php" line="25" assertions="1" time="1.225736"/>
-    </testsuite>
-  </testsuite>
-</testsuites>

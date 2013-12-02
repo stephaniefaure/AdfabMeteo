@@ -1,5 +1,5 @@
 <?php
-namespace AdfabMeteo\Controller;
+namespace AdfabMeteo\Controller\Frontend;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -15,7 +15,7 @@ class AdfabMeteoController extends AbstractActionController
     public function indexAction()
     {
         $viewModel = new ViewModel();
-
+        var_dump($viewModel->getTemplate());
         return $viewModel;
     }
 

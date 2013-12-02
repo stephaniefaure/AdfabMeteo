@@ -27,6 +27,9 @@ class WeatherDataUse extends EventProvider implements ServiceManagerAwareInterfa
 
     public function getWeatherDailyOccurrenceMapper()
     {
+        if (!$this->weatherDailyOccurrenceMapper) {
+            $this->weatherDailyOccurrenceMapper = $this->getServiceManager()->get('adfabmeteo_weatherdailyoccurrence_mapper')
+        }
         return $this->weatherDailyOccurrenceMapper;
     }
 
@@ -38,7 +41,10 @@ class WeatherDataUse extends EventProvider implements ServiceManagerAwareInterfa
 
     public function getWeatherHourlyOccurrenceMapper()
     {
-        return $this->weatherDailyOccurrenceMapper;
+        if (!$this->weatherHourlyOccurrenceMapper) {
+            $this->weatherHourlyOccurrenceMapper = $this->getServiceManager()->get('adfabmeteo_weatherhourlyoccurrence_mapper')
+        }
+        return $this->weatherHourlyOccurrenceMapper;
     }
 
     public function setWeatherHourlyOccurrenceMapper(WeatherHourlyOccurrenceMapper $weatherHourlyOccurrenceMapper)
@@ -56,5 +62,19 @@ class WeatherDataUse extends EventProvider implements ServiceManagerAwareInterfa
     {
         $this->serviceManager = $serviceManager;
         return $this;
+    }
+
+    public function setOptions(ModuleOptions $options)
+    {
+        $this->options = $options;
+        return $this;
+    }
+
+    public function getOptions()
+    {
+        if (!$this->options instanceof ModuleOptions) {
+            $this->setOptions($this->getServiceManager()->get('adfabmeteo_module_options'));
+        }
+        return $this->options;
     }
 }

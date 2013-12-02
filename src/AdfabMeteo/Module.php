@@ -81,9 +81,23 @@ class Module
                 'adfabmeteo_weatherlocation_service' => 'AdfabMeteo\Service\WeatherLocation',
                 'adfabmeteo_weatherdatayield_service' => 'AdfabMeteo\Service\WeatherDataYield',
                 'adfabmeteo_weatherdatause_service' => 'AdfabMeteo\Service\WeatherDataUse',
+                'adfabmeteo_weathercode_service' => 'AdfabMeteo\Service\WeatherCode',
             ),
 
             'factories' => array(
+                'adfabmeteo_module_options' => function ($sm) {
+                    $config = $sm->get('Configuration');
+
+                    return new Options\ModuleOptions(isset($config['adfabmeteo']) ? $config['adfabmeteo'] : array()
+                    );
+                },
+
+                'adfabmeteo_weathercode_mapper' => function ($sm) {
+                    $mapper = new Mapper\WeatherCode(
+                        $sm->get('doctrine.entitymanager.orm_default')
+                    );
+                    return $mapper;
+                },
                 'adfabmeteo_weatherlocation_mapper' => function ($sm) {
                     $mapper = new Mapper\WeatherLocation(
                         $sm->get('doctrine.entitymanager.orm_default')
@@ -101,6 +115,22 @@ class Module
                         $sm->get('doctrine.entitymanager.orm_default')
                     );
                     return $mapper;
+                },
+                'adfabmeteo_associationtable_form' => function ($sm) {
+                    $translator = $sm->get('translator');
+                    $form = new Form\Admin\AssociationTable(null, $sm, $translator);
+//                     $codeObject = new Entity\WeatherCode();
+//                     $inputFilter = $codeObject->getInputFilter();
+
+//                     $fileFilter = new \Zend\InputFilter\FileInput('icon');
+//                     $validatorChain = new \Zend\Validator\ValidatorChain();
+//                     $validatorChain->attach(new \Zend\Validator\File\Exists());
+//                     $validatorChain->attach(new \Zend\Validator\File\Extension(array('jpg', 'jpeg', 'png')));
+//                     $fileFilter->setValidatorChain($validatorChain);
+
+//                     $inputFilter->add($fileFilter);
+//                     $form->setInputFilter($inputFilter);
+                    return $form;
                 },
             ),
         );

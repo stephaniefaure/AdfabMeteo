@@ -16,13 +16,26 @@ return array(
     ),
     'view_manager' => array(
         'template_path_stack' => array(
-            __DIR__ . '/../views/admin',
-            __DIR__ . '/../views/frontend'
+             __DIR__ . '/../views/admin',
+             __DIR__ . '/../views/frontend'
         ),
+    ),
+    'translator' => array(
+        'locale' => 'fr_FR',
+        'translation_file_patterns' => array(
+            array(
+                'type' => 'phpArray',
+                'base_dir' => __DIR__ . '/../language',
+                'pattern' => '%s.php',
+                'text_domain' => 'adfabmeteo'
+            )
+        )
     ),
     'controllers' => array(
         'invokables' => array(
-            'adfabmeteocontroller' => 'AdfabMeteo\Controller\AdfabMeteoController',
+            'adfabmeteo_controller' => 'AdfabMeteo\Controller\Frontend\AdfabMeteoController',
+            'adfabmeteo_admin_controller' => 'AdfabMeteo\Controller\Admin\AdfabMeteoController',
+            'weathercode_admin_controller' => 'AdfabMeteo\Controller\Admin\WeatherCodeController',
         ),
     ),
     'view_helpers' => array(
@@ -39,8 +52,8 @@ return array(
                         'options' => array(
                             'route' => 'meteo',
                             'defaults' => array(
-                                'controller' => 'adfabmeteocontroller',
-                                'action' => 'index'
+                                'controller' => 'adfabmeteo_controller',
+                                'action' => 'index',
                             )
                         ),
 //                         'may_terminate' => true,
@@ -59,18 +72,72 @@ return array(
                     ),
                 ),
             ),
-        ),
-    ),
-    // Templates associations with controllers actions
-    'core_layout' => array(
-        'frontend' => array(
-            'modules' => array(
-                'adfabmeteo' => array(
-                    'controllers' => array(
-                        'adfabmeteocontroller' => array(
-                            'actions' => array(
-                                'index' => array(
-                                    'layout' => 'adfab-meteo\index.phtml'
+            'admin' => array(
+                'child_routes' => array(
+                    'meteo' => array(
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route' => '/meteo',
+                            'defaults' => array(
+                                'controller' => 'adfabmeteo_admin_controller',
+                                'action' => 'index',
+                            ),
+                        ),
+                        'may_terminate' => true,
+                        'child_routes' => array(
+                            'weather-codes' => array(
+                                'type' => 'Literal',
+                                'options' => array(
+                                    'route' => '/weather-codes',
+                                    'defaults' => array(
+                                        'controller' => 'weathercode_admin_controller',
+                                        'action' => 'associate',
+                                    ),
+                                ),
+                                'may_terminate' => true,
+                                'child_routes' => array(
+                                    'add' => array(
+                                        'type' => 'Literal',
+                                        'options' => array(
+                                            'route' => '/add',
+                                            'defaults' => array(
+                                                'controller' => 'weathercode_admin_controller',
+                                                'action' => 'add',
+                                            ),
+                                        ),
+                                    ),
+                                    'import' => array(
+                                        'type' => 'Literal',
+                                        'options' => array(
+                                            'route' => '/import',
+                                            'defaults' => array(
+                                                'controller' => 'weathercode_admin_controller',
+                                                'action' => 'import',
+                                            ),
+                                        ),
+                                    ),
+                                    'remove' => array(
+                                        'type' => 'Segment',
+                                        'options' => array(
+                                            'route' => '/remove/:codeId',
+                                            'defaults' => array(
+                                                'controller' => 'weathercode_admin_controller',
+                                                'action' => 'remove',
+                                                'codeId' => 0,
+                                            ),
+                                        ),
+                                    ),
+                                    'edit' => array(
+                                        'type' => 'Segment',
+                                        'options' => array(
+                                            'route' => '/edit/:codeId',
+                                            'defaults' => array(
+                                                'controller' => 'weathercode_admin_controller',
+                                                'action' => 'edit',
+                                                'codeId' => 0,
+                                            ),
+                                        ),
+                                    ),
                                 ),
                             ),
                         ),

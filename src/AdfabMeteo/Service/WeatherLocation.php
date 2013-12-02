@@ -58,5 +58,18 @@ class WeatherLocation extends EventProvider implements ServiceManagerAwareInterf
         $this->serviceManager = $serviceManager;
         return $this;
     }
+
+    public function setOptions(ModuleOptions $options)
+    {
+        $this->options = $options;
+        return $this;
+    }
+
+    public function getOptions()
+    {
+        if (!$this->options instanceof ModuleOptions) {
+            $this->setOptions($this->getServiceManager()->get('adfabmeteo_module_options'));
+        }
+        return $this->options;
     }
 }

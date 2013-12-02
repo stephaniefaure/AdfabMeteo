@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
+use Zend\InputFilter\InputFilter;
+use Zend\InputFilter\Factory;
 
 /**
  * @ORM\Entity @HasLifecycleCallbacks
@@ -40,7 +42,8 @@ class WeatherHourlyOccurrence implements InputFilterAwareInterface
     protected $temperature; // saved in Celsius' degrees
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="WeatherCode", inversedBy="WeatherCode", cascade={"persist"})
+     * @ORM\JoinColumn(name="weather_code_id", referencedColumnName="id")
      */
     protected $weatherCode;
 
@@ -142,7 +145,7 @@ class WeatherHourlyOccurrence implements InputFilterAwareInterface
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+            $factory = new Factory();
             $inputFilter = parent::getInputFilter();
 
             $inputFilter->add($factory->createInput(array('name' => 'id', 'required' => true, 'filters' => array(array('name' => 'Int'),),)));

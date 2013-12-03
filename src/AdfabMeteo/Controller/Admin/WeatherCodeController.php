@@ -3,10 +3,7 @@ namespace AdfabMeteo\Controller\Admin;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use AdfabMeteo\Service\WeatherLocation as WeatherLocationService;
 use AdfabMeteo\Service\WeatherCode as WeatherCodeService;
-use Zend\Form\Form;
-use AdfabMeteo\Entity\WeatherCode;
 
 class WeatherCodeController extends AbstractActionController
 {
@@ -14,14 +11,6 @@ class WeatherCodeController extends AbstractActionController
      * @var WeatherCodeService
      */
     protected $weatherCodeService;
-
-
-    public function indexAction()
-    {
-        $viewModel = new ViewModel();
-
-        return $viewModel;
-    }
 
     public function addAction()
     {
@@ -53,14 +42,12 @@ class WeatherCodeController extends AbstractActionController
             }
         }
         // Display
-        $viewModel = new ViewModel();
-        $viewModel->setVariables(
+        return new ViewModel(
             array(
                 'form' => $form,
                 'flashMessages' => $this->flashMessenger()->getMessages(),
             )
         );
-        return $viewModel;
     }
 
     public function editAction()
@@ -171,11 +158,12 @@ class WeatherCodeController extends AbstractActionController
             }
             return $this->redirect()->toRoute('admin/meteo/weather-codes/import');
         }
-        $viewModel = new ViewModel();
-        $viewModel->setVariables(array(
-            'form' => $form,
-        ));
-        return $viewModel;
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'flashMessages' => $this->flashMessenger()->getMessages(),
+            )
+        );
     }
 
     public function associateAction()
@@ -219,8 +207,7 @@ class WeatherCodeController extends AbstractActionController
             return $this->redirect()->toRoute('admin/meteo/weather-codes/list');
         }
 
-        $viewModel = new ViewModel();
-        $viewModel->setVariables(
+        return new ViewModel(
             array(
                 'appCodes' => $appCodes,
                 'providerCodes' =>  $providerCodes,
@@ -228,7 +215,6 @@ class WeatherCodeController extends AbstractActionController
                 'flashMessages' => $this->flashMessenger()->getMessages(),
             )
         );
-        return $viewModel;
     }
 
     public function getWeatherCodeService()

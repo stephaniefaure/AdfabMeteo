@@ -33,9 +33,10 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'adfabmeteo_controller' => 'AdfabMeteo\Controller\Frontend\AdfabMeteoController',
-            'adfabmeteo_admin_controller' => 'AdfabMeteo\Controller\Admin\AdfabMeteoController',
-            'weathercode_admin_controller' => 'AdfabMeteo\Controller\Admin\WeatherCodeController',
+            'adfabmeteo_controller'             => 'AdfabMeteo\Controller\Frontend\AdfabMeteoController',
+            'adfabmeteo_admin_controller'       => 'AdfabMeteo\Controller\Admin\AdfabMeteoController',
+            'weathercode_admin_controller'      => 'AdfabMeteo\Controller\Admin\WeatherCodeController',
+            'weatherlocation_admin_controller'  => 'AdfabMeteo\Controller\Admin\WeatherLocationController',
         ),
     ),
     'view_helpers' => array(
@@ -145,6 +146,62 @@ return array(
                                                 'controller' => 'weathercode_admin_controller',
                                                 'action' => 'edit',
                                                 'codeId' => 0,
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            ),
+
+                            'weather-locations' => array(
+                                'type' => 'Literal',
+                                'options' => array(
+                                    'route' => '/weather-locations',
+                                    'defaults' => array(
+                                        'controller' => 'weatherlocation_admin_controller',
+                                        'action' => 'list',
+                                    ),
+                                ),
+                                'may_terminate' => true,
+                                'child_routes' => array(
+                                    'add' => array(
+                                        'type' => 'Literal',
+                                        'options' => array(
+                                            'route' => '/add',
+                                            'defaults' => array(
+                                                'controller' => 'weatherlocation_admin_controller',
+                                                'action' => 'add',
+                                            ),
+                                        ),
+                                    ),
+                                    'list' => array(
+                                        'type' => 'Literal',
+                                        'options' => array(
+                                            'route' => '/list',
+                                            'defaults' => array(
+                                                'controller' => 'weatherlocation_admin_controller',
+                                                'action' => 'list',
+                                            ),
+                                        ),
+                                    ),
+                                    'remove' => array(
+                                        'type' => 'Segment',
+                                        'options' => array(
+                                            'route' => '/remove/:codeId',
+                                            'defaults' => array(
+                                                'controller' => 'weatherlocation_admin_controller',
+                                                'action' => 'remove',
+                                                'locationId' => 0,
+                                            ),
+                                        ),
+                                    ),
+                                    'edit' => array(
+                                        'type' => 'Segment',
+                                        'options' => array(
+                                            'route' => '/edit/:codeId',
+                                            'defaults' => array(
+                                                'controller' => 'weatherlocation_admin_controller',
+                                                'action' => 'edit',
+                                                'locationId' => 0,
                                             ),
                                         ),
                                     ),

@@ -28,6 +28,15 @@ class WeatherLocation
         return $this->er;
     }
 
+    public function queryAll($sortArray = array())
+    {
+        $query = $this->em->createQuery(
+            'SELECT l FROM AdfabMeteo\Entity\WeatherLocation l '
+            .( ! empty($sortArray) ? 'ORDER BY l.'.key($sortArray).' '.current($sortArray) : '' )
+        );
+        return $query;
+    }
+
     public function findById($id)
     {
         return $this->getEntityRepository()->find($id);

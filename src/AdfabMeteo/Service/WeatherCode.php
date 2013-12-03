@@ -7,6 +7,7 @@ use Zend\ServiceManager\ServiceManager;
 use ZfcBase\EventManager\EventProvider;
 use AdfabMeteo\Entity\WeatherCode as WeatherCodeEntity;
 use PlaygroundCore\Filter\Slugify;
+use AdfabMeteo\Options\ModuleOptions;
 
 class WeatherCode extends EventProvider implements ServiceManagerAwareInterface
 {
@@ -16,6 +17,11 @@ class WeatherCode extends EventProvider implements ServiceManagerAwareInterface
     protected $weatherCodeMapper;
 
     /**
+     * @var ModuleOptions
+     */
+    protected $options;
+
+    /**
      * @var ServiceManager
      */
     protected $serviceManager;
@@ -23,8 +29,22 @@ class WeatherCode extends EventProvider implements ServiceManagerAwareInterface
     public function create(array $data)
     {
         $weatherCode = new WeatherCodeEntity();
-        $this->getWeatherCodeMapper()->insert($weatherCode);
-        $this->update($weatherCode->getId(), $data);
+        $weatherCode->populate($data);
+        $weatherCode = $this->getWeatherCodeMapper()->insert($weatherCode);
+        if (!$weatherCode) {
+            return false;
+        }
+        return $this->update($weatherCode->getId(), $data);
+    }
+
+    public function edit($codeId, array $data)
+    {
+        // find by Id the corresponding weatherCode
+        $weatherCode = $this->getWeatherCodeMapper()->findById($codeId);
+        if (!$weatherCode) {
+            return false;
+        }
+        return $this->update($weatherCode->getId(), $data);
     }
 
     public function update($codeId, array $data)

@@ -8,8 +8,9 @@ use Zend\Form\Element;
 use PlaygroundCore\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use Zend\I18n\Translator\Translator;
 use Zend\ServiceManager\ServiceManager;
+use Zend\InputFilter\InputFilterProviderInterface;
 
-class WeatherCode extends Fieldset
+class WeatherCode extends Fieldset implements InputFilterProviderInterface
 {
     protected $serviceManager;
 
@@ -24,12 +25,14 @@ class WeatherCode extends Fieldset
         $this->setHydrator(new DoctrineHydrator($entityManager, 'AdfabMeteo\Entity\WeatherCode'))
         ->setObject(new \AdfabMeteo\Entity\WeatherCode());
 
-        $this->setAttribute('method','post');
         $this->setAttribute('enctype', 'multipart/form-data');
 
         $this->add(array(
             'name' => 'id',
             'type'  => 'Zend\Form\Element\Hidden',
+            'attributes' => array(
+                'value' => 0,
+            ),
         ));
 
         $this->add(array(
@@ -46,7 +49,7 @@ class WeatherCode extends Fieldset
         $this->add(array(
             'name' => 'description',
             'options' => array(
-                'label' => $translator->translate('description', 'adfabmeteo')
+                'label' => $translator->translate('Description', 'adfabmeteo')
             ),
             'attributes' => array(
                 'type' => 'text'
@@ -56,7 +59,7 @@ class WeatherCode extends Fieldset
         $this->add(array(
             'name' => 'icon',
             'options' => array(
-                'label' => $translator->translate('icône', 'adfabmeteo')
+                'label' => $translator->translate('Icône', 'adfabmeteo')
             ),
             'attributes' => array(
                 'type' => 'file'
@@ -64,19 +67,21 @@ class WeatherCode extends Fieldset
         ));
         $this->add(array(
             'name' => 'iconURL',
+            'type' => 'Zend\Form\Element\Hidden',
             'attributes' => array(
-                'type' => 'hidden'
-            )
+                'value' => '',
+            ),
         ));
 
         $this->add(array(
-            'name' => 'default',
+            'name' => 'isDefault',
+            'type' => 'Zend\Form\Element\Hidden',
             'options' => array(
-                'label' => $translator->translate('default', 'adfabmeteo')
+                'label' => $translator->translate('Default', 'adfabmeteo')
             ),
             'attributes' => array(
-                'type' => 'hidden'
-            )
+                'value' => 0,
+            ),
         ));
 
         $codes = $this->getNonDefaultCodes();
@@ -92,11 +97,33 @@ class WeatherCode extends Fieldset
 
     }
 
+    public function getInputFilterSpecification()
+    {
+        return array(
+            'icon' => array(
+                'required' => false,
+                'allowEmpty' => true,
+                'properties' => array(
+                    'required' => false,
+                    'allowEmpty' => true,
+                )
+            ),
+            'associatedCode' => array(
+                'required' => false,
+                'allowEmpty' => true,
+                'properties' => array(
+                    'required' => false,
+                    'allowEmpty' => true,
+                )
+            ),
+        );
+    }
+
     public function getNonDefaultCodes()
     {
     	$codes = array();
     	$codeService = $this->getServiceManager()->get('adfabmeteo_weathercode_service');
-    	$results = $codeService->getWeatherCodeMapper()->findBy(array('default'=>0));
+    	$results = $codeService->getWeatherCodeMapper()->findBy(array('isDefault'=>0));
 
     	foreach ($results as $result) {
     		$codes[$result->getId()] = $result->getDescription();
@@ -127,4 +154,5 @@ class WeatherCode extends Fieldset
 
         return $this;
     }
+
 }

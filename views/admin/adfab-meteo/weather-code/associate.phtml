@@ -23,8 +23,7 @@ $form->prepare();
                 <?php echo $this->formInput($element->get('description')); ?>
             </div>
             <div class="label-input">
-                <?php echo $this->formLabel($element->get('default')); ?>
-                <?php echo $this->formHidden($element->get('default')); ?>
+                <?php echo $this->formHidden($element->get('isDefault')); ?>
             </div>
             <div class="label-input">
                 <?php echo $this->formLabel($element->get('icon')); ?>

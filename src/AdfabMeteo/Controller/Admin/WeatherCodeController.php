@@ -29,20 +29,20 @@ class WeatherCodeController extends AbstractActionController
         $form->get('submit')->setLabel("Créer");
         $form->get('codes')->setCount(1)->prepareFieldset();
         $form->setAttribute('action', '');
-
-        $code = new WeatherCode();
-        $form->bind($code);
-
         if ($this->getRequest()->isPost()) {
-            $data = $this->getRequest()->getPost();
-            $data['default'] = 0;
+            $data = array_replace_recursive(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            );
+            if(empty($data['codes'])){
+                $data['codes'] = array();
+            }
             $form->setData($data);
-//             var_dump($form);
             if ($form->isValid()) {
-                $this->getWeatherCodeService()->create($form->getData());
-            } else {
-                var_dump($form->getMessages());
-                var_dump($form->get('codes')->getMessages());
+                $code = $this->getWeatherCodeService()->create(current($form->getData()['codes']));
+                if ($code) {
+                    return $this->redirect()->toRoute('admin/meteo/weather-codes/list');
+                }
             }
         }
 
@@ -69,11 +69,10 @@ class WeatherCodeController extends AbstractActionController
         return $viewModel;
     }
 
-
     public function associateAction()
     {
-
         $form = $this->getServiceLocator()->get('adfabmeteo_associationtable_form');
+        $form->get('submit')->setLabel("Enregistrer");
         $viewModel = new ViewModel();
         $viewModel->setVariables(
             array(

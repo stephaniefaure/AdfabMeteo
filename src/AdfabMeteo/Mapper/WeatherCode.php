@@ -72,7 +72,7 @@ class WeatherCode
         return $this->getEntityRepository()->findBy(
             array(
                 'code' => $code,
-                'default' => 1,
+                'isDefault' => 1,
             ));
     }
 

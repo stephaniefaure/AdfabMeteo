@@ -20,6 +20,7 @@ class AssociationTable extends ProvidesEventsForm
         $this->setServiceManager($sm);
 
         $this->setAttribute('method', 'post');
+        $this->setAttribute('enctype', 'multipart/form-data');
 
         $weatherCodeFieldset = new weatherCode(null, $sm, $translator);
         $this->add(array(
@@ -29,7 +30,8 @@ class AssociationTable extends ProvidesEventsForm
                 'id'    => 'codes',
                 'label' => $translator->translate('List of states', 'adfabmeteo'),
                 'count' => 0,
-                'target_element' => $weatherCodeFieldset
+                'should_create_template' => true,
+                'target_element' => $weatherCodeFieldset,
             )
         ));
 

@@ -8,10 +8,14 @@ use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\Factory;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 
 /**
  * @ORM\Entity @HasLifecycleCallbacks
- * @ORM\Table(name="weather_code")
+ * @ORM\Table(
+ *              name="weather_code",
+ *              uniqueConstraints={@UniqueConstraint(name="code", columns={"code", "description"})}
+ *           )
  */
 class WeatherCode implements InputFilterAwareInterface
 {
@@ -40,9 +44,9 @@ class WeatherCode implements InputFilterAwareInterface
     protected $iconURL = '';
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(name="is_default", type="boolean")
      */
-    protected $default = 0;
+    protected $isDefault = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity="WeatherCode", inversedBy="WeatherCode", cascade={"persist"})
@@ -138,19 +142,19 @@ class WeatherCode implements InputFilterAwareInterface
     }
 
     /**
-     * @return $default
+     * @return $isDefault
      */
-    public function getDefault()
+    public function getIsDefault()
     {
-        return $this->default;
+        return $this->isDefault;
     }
 
     /**
-     * @param string $default
+     * @param string $isDefault
      */
-    public function setDefault($default)
+    public function setIsDefault($isDefault)
     {
-        $this->default = $default;
+        $this->isDefault = $isDefault;
         return $this;
     }
 
@@ -167,8 +171,8 @@ class WeatherCode implements InputFilterAwareInterface
         if (isset($data['description']) && $data['description'] != null) {
             $this->description = $data['description'];
         }
-        if (isset($data['default']) && $data['default'] != null) {
-            $this->default = $data['default'];
+        if (isset($data['isDefault']) && $data['isDefault'] != null) {
+            $this->isDefault = $data['isDefault'];
         }
     }
 

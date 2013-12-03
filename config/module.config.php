@@ -106,6 +106,16 @@ return array(
                                             ),
                                         ),
                                     ),
+                                    'list' => array(
+                                        'type' => 'Literal',
+                                        'options' => array(
+                                            'route' => '/list',
+                                            'defaults' => array(
+                                                'controller' => 'weathercode_admin_controller',
+                                                'action' => 'associate',
+                                            ),
+                                        ),
+                                    ),
                                     'import' => array(
                                         'type' => 'Literal',
                                         'options' => array(

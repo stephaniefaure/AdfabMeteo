@@ -26,16 +26,16 @@ class WeatherCodeTest extends \PHPUnit_Framework_TestCase
     {
         $code1 = new WeatherCode();
         $code1->setCode(1);
-        $code1->setDefault(0);
+        $code1->setIsDefault(0);
 
         $code2 = new WeatherCode();
         $code2->setCode(2);
-        $code2->setDefault(0);
+        $code2->setIsDefault(0);
         $code2->setAssociatedCode($code1);
 
         $code3 = new WeatherCode();
         $code3->setCode(3);
-        $code3->setDefault(0);
+        $code3->setIsDefault(0);
         $code3->setAssociatedCode($code2);
 
         $this->assertEquals($code1, $this->tm->findLastAssociatedCode($code3));

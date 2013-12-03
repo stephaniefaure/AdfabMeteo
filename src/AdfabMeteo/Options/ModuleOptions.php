@@ -95,4 +95,55 @@ class ModuleOptions extends AbstractOptions
         return $this;
     }
 
+    /**
+     * @return $forecastURL
+     */
+    public function getForecastURL()
+    {
+        return $this->$forecastURL;
+    }
+
+    /**
+     * @param boolean $forecastURL
+     */
+    public function setForecastURL($forecastURL)
+    {
+        $this->forecastURL = $forecastURL;
+        return $this;
+    }
+
+    /**
+     * @return $pastURL
+     */
+    public function getPastURL()
+    {
+        return $this->pastURL;
+    }
+
+    /**
+     * @param boolean $pastURL
+     */
+    public function setPastURL($pastURL)
+    {
+        $this->pastURL = $pastURL;
+        return $this;
+    }
+
+    /**
+     * @return $locationURL
+     */
+    public function getLocationURL()
+    {
+        return $this->locationURL;
+    }
+
+    /**
+     * @param boolean $locationURL
+     */
+    public function setLocationURL($locationURL)
+    {
+        $this->locationURL = $locationURL;
+        return $this;
+    }
+
 }

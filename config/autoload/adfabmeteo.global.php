@@ -18,22 +18,27 @@ $adfabmeteo = array(
     /**
      * Weather Provider API User key
      */
-    'userKey' => '',
+    // Free account
+    // 'userKey' => 'y6h6rejcu2wnxfaju36puku6',
+
+
+    // Premium account
+    'userKey' => '3v9xstjra8nnajmw8hrw8u6a',
 
     /**
      * URL on which we can query for weather forecasts
      */
-    'forecastURL' => '',
+    'forecastURL' => ' http://api.worldweatheronline.com/premium/v1/weather.ashx',
 
     /**
      * URL on which we can query for real past weather data
      */
-    'pastURL' => '',
+    'pastURL' => 'http://api.worldweatheronline.com/premium/v1/past-weather.ashx',
 
     /**
      * URL on which we can query for locations
      */
-    'locationURL' => '',
+    'locationURL' => 'http://api.worldweatheronline.com/premium/v1/search.ashx ',
 );
 
 /**

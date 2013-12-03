@@ -50,7 +50,7 @@ class WeatherCode implements InputFilterAwareInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="WeatherCode", inversedBy="WeatherCode", cascade={"persist"})
-     * @ORM\JoinColumn(name="associated_code", referencedColumnName="id")
+     * @ORM\JoinColumn(name="associated_code", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $associatedCode = null;
 

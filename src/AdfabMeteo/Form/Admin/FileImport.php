@@ -7,9 +7,9 @@ use ZfcBase\Form\ProvidesEventsForm;
 use Zend\I18n\Translator\Translator;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use Zend\ServiceManager\ServiceManager;
-use AdfabMeteo\Form\Admin\WeatherCode;
+use AdfabMeteo\Form\Admin\WeatherCodeFieldset;
 
-class AssociationTable extends ProvidesEventsForm
+class FileImport extends ProvidesEventsForm
 {
     protected $serviceManager;
 
@@ -22,16 +22,12 @@ class AssociationTable extends ProvidesEventsForm
         $this->setAttribute('method', 'post');
         $this->setAttribute('enctype', 'multipart/form-data');
 
-        $weatherCodeFieldset = new weatherCode(null, $sm, $translator);
         $this->add(array(
-            'type'    => 'Zend\Form\Element\Collection',
-            'name'    => 'codes',
+            'type'    => 'Zend\Form\Element\File',
+            'name'    => 'file',
             'options' => array(
-                'id'    => 'codes',
-                'label' => $translator->translate('List of states', 'adfabmeteo'),
-                'count' => 0,
-                'should_create_template' => true,
-                'target_element' => $weatherCodeFieldset,
+                'id'    => 'file',
+                'label' => $translator->translate('Fichier', 'adfabmeteo'),
             )
         ));
 

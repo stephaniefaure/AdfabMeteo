@@ -1,135 +1,49 @@
 <?php
-
 namespace AdfabMeteo\Form\Admin;
 
-use Zend\Form\Fieldset;
 use Zend\Form\Form;
 use Zend\Form\Element;
-use PlaygroundCore\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
+use ZfcBase\Form\ProvidesEventsForm;
 use Zend\I18n\Translator\Translator;
+use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use Zend\ServiceManager\ServiceManager;
-use Zend\InputFilter\InputFilterProviderInterface;
+use AdfabMeteo\Form\Admin\WeatherCodeFieldset;
 
-class WeatherCode extends Fieldset implements InputFilterProviderInterface
+class WeatherCode extends ProvidesEventsForm
 {
     protected $serviceManager;
 
-    public function __construct($name = null, ServiceManager $serviceManager, Translator $translator)
+    public function __construct ($name = null, ServiceManager $sm, Translator $translator)
     {
         parent::__construct($name);
 
-        $this->setServiceManager($serviceManager);
+        $this->setServiceManager($sm);
 
-        $entityManager = $serviceManager->get('doctrine.entitymanager.orm_default');
-
-        $this->setHydrator(new DoctrineHydrator($entityManager, 'AdfabMeteo\Entity\WeatherCode'))
-        ->setObject(new \AdfabMeteo\Entity\WeatherCode());
-
+        $this->setAttribute('method', 'post');
         $this->setAttribute('enctype', 'multipart/form-data');
 
+        $weatherCodeFieldset = new WeatherCodeFieldset(null, $sm, $translator);
         $this->add(array(
-            'name' => 'id',
-            'type'  => 'Zend\Form\Element\Hidden',
-            'attributes' => array(
-                'value' => 0,
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'code',
+            'type'    => 'Zend\Form\Element\Collection',
+            'name'    => 'codes',
             'options' => array(
-                'label' => $translator->translate('Code', 'adfabmeteo'),
-            ),
-            'attributes' => array(
-                'type' => 'text',
-                'placeholder' => $translator->translate('Code', 'adfabmeteo'),
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'description',
-            'options' => array(
-                'label' => $translator->translate('Description', 'adfabmeteo')
-            ),
-            'attributes' => array(
-                'type' => 'text'
+                'id'    => 'codes',
+                'label' => $translator->translate('List of states', 'adfabmeteo'),
+                'count' => 0,
+                'should_create_template' => true,
+                'target_element' => $weatherCodeFieldset,
             )
         ));
 
-        $this->add(array(
-            'name' => 'icon',
-            'options' => array(
-                'label' => $translator->translate('Icône', 'adfabmeteo')
-            ),
-            'attributes' => array(
-                'type' => 'file'
-            )
-        ));
-        $this->add(array(
-            'name' => 'iconURL',
-            'type' => 'Zend\Form\Element\Hidden',
-            'attributes' => array(
-                'value' => '',
-            ),
+        $submitElement = new Element\Button('submit');
+        $submitElement->setAttributes(array(
+            'type'  => 'submit',
+            'class' => 'btn btn-primary',
         ));
 
-        $this->add(array(
-            'name' => 'isDefault',
-            'type' => 'Zend\Form\Element\Hidden',
-            'options' => array(
-                'label' => $translator->translate('Default', 'adfabmeteo')
-            ),
-            'attributes' => array(
-                'value' => 0,
-            ),
+        $this->add($submitElement, array(
+            'priority' => -100,
         ));
-
-        $codes = $this->getNonDefaultCodes();
-        $this->add(array(
-            'type' => 'Zend\Form\Element\Select',
-            'name' => 'associatedCode',
-            'options' => array(
-                'empty_option' => $translator->translate('Pas d\'association, valeur par défaut', 'adfabmeteo'),
-                'value_options' => $codes,
-                'label' => $translator->translate('Code associé', 'adfabmeteo')
-            )
-        ));
-
-    }
-
-    public function getInputFilterSpecification()
-    {
-        return array(
-            'icon' => array(
-                'required' => false,
-                'allowEmpty' => true,
-                'properties' => array(
-                    'required' => false,
-                    'allowEmpty' => true,
-                )
-            ),
-            'associatedCode' => array(
-                'required' => false,
-                'allowEmpty' => true,
-                'properties' => array(
-                    'required' => false,
-                    'allowEmpty' => true,
-                )
-            ),
-        );
-    }
-
-    public function getNonDefaultCodes()
-    {
-    	$codes = array();
-    	$codeService = $this->getServiceManager()->get('adfabmeteo_weathercode_service');
-    	$results = $codeService->getWeatherCodeMapper()->findBy(array('isDefault'=>0));
-
-    	foreach ($results as $result) {
-    		$codes[$result->getId()] = $result->getDescription();
-    	}
-
-    	return $codes;
     }
 
     /**
@@ -154,5 +68,4 @@ class WeatherCode extends Fieldset implements InputFilterProviderInterface
 
         return $this;
     }
-
 }

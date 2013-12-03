@@ -116,9 +116,9 @@ class Module
                     );
                     return $mapper;
                 },
-                'adfabmeteo_associationtable_form' => function ($sm) {
+                'adfabmeteo_weathercode_form' => function ($sm) {
                     $translator = $sm->get('translator');
-                    $form = new Form\Admin\AssociationTable(null, $sm, $translator);
+                    $form = new Form\Admin\WeatherCode(null, $sm, $translator);
 //                     $codeObject = new Entity\WeatherCode();
 //                     $inputFilter = $codeObject->getInputFilter();
 
@@ -132,6 +132,11 @@ class Module
 //                     $form->setInputFilter($inputFilter);
                     return $form;
                 },
+                'adfabmeteo_fileimport_form' => function ($sm) {
+                    $translator = $sm->get('translator');
+                    $form = new Form\Admin\FileImport(null, $sm, $translator);
+                    return $form;
+                }
             ),
         );
     }

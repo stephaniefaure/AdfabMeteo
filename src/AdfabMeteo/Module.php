@@ -41,6 +41,9 @@ class Module
     public function getAutoloaderConfig()
     {
         return array(
+            'Zend\Loader\ClassMapAutoloader' => array(
+                __DIR__ . '/../../autoload_classmap.php',
+            ),
             'Zend\Loader\StandardAutoLoader' => array(
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__.'/../../src/' . __NAMESPACE__,
@@ -67,6 +70,16 @@ class Module
 
                     return $viewHelper;
                 },
+                'weatherTableWidget' => function($sm) {
+                    $locator = $sm->getServiceLocator();
+                    $viewHelper = new View\Helper\WeatherTableWidget();
+                    return $viewHelper;
+                },
+                'weatherMapWidget' => function($sm) {
+                    $locator = $sm->getServiceLocator();
+                    $viewHelper = new View\Helper\WeatherMapWidget();
+                    return $viewHelper;
+                },
             ),
         );
     }
@@ -79,6 +92,7 @@ class Module
 
             'invokables' => array(
                 'adfabmeteo_weatherlocation_service' => 'AdfabMeteo\Service\WeatherLocation',
+                'adfabmeteo_weatheroccurrence_service' => 'AdfabMeteo\Service\WeatherOccurrence',
                 'adfabmeteo_weatherdatayield_service' => 'AdfabMeteo\Service\WeatherDataYield',
                 'adfabmeteo_weatherdatause_service' => 'AdfabMeteo\Service\WeatherDataUse',
                 'adfabmeteo_weathercode_service' => 'AdfabMeteo\Service\WeatherCode',

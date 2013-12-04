@@ -181,6 +181,12 @@ class WeatherCode implements InputFilterAwareInterface
         return get_object_vars($this);
     }
 
+    public function getAsJson()
+    {
+        var_dump($this->getArrayCopy());
+        return json_encode($this->getArrayCopy(), JSON_FORCE_OBJECT);
+    }
+
     /**
      * @param InputFilterInterface
      */

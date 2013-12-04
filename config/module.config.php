@@ -19,6 +19,9 @@ return array(
              __DIR__ . '/../views/admin',
              __DIR__ . '/../views/frontend'
         ),
+        'strategies' =>array(
+            'ViewJsonStrategy',
+        ),
     ),
     'translator' => array(
         'locale' => 'fr_FR',
@@ -34,6 +37,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'adfabmeteo_controller'             => 'AdfabMeteo\Controller\Frontend\AdfabMeteoController',
+            'weatheroccurrence_controller'      => 'AdfabMeteo\Controller\Frontend\WeatherOccurrenceController',
             'adfabmeteo_admin_controller'       => 'AdfabMeteo\Controller\Admin\AdfabMeteoController',
             'weathercode_admin_controller'      => 'AdfabMeteo\Controller\Admin\WeatherCodeController',
             'weatherlocation_admin_controller'  => 'AdfabMeteo\Controller\Admin\WeatherLocationController',
@@ -42,10 +46,29 @@ return array(
     'view_helpers' => array(
         'invokables' => array(
             'forecastWidget' => 'AdfabMeteo\View\Helper\ForecastWidget',
+            'weatherTableWidget' => 'AdfabMeteo\View\Helper\WeatherTableWidget',
+            'weatherMapWidget' => 'AdfabMeteo\View\Helper\WeatherMapWidget',
         ),
     ),
     'router' => array(
         'routes' =>array(
+            'GET' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route' => '/GET',
+                ),
+                'child_routes' => array(
+                    'forecast' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/weather/:locationId/:date',
+                            'defaults' => array(
+                                'controller' => 'weatheroccurrence_controller',
+                            ),
+                        ),
+                    ),
+                ),
+            ),
             'frontend' => array(
                 'child_routes' => array(
                     'meteo' => array(
@@ -57,19 +80,6 @@ return array(
                                 'action' => 'index',
                             )
                         ),
-//                         'may_terminate' => true,
-//                         'child_routes' => array(
-//                             'result' => array(
-//                                 'type' => 'Literal',
-//                                 'options' => array(
-//                                     'route' => '/resultat',
-//                                     'defaults' => array(
-//                                         'controller' => 'smartboxcontroller',
-//                                         'action' => 'result',
-//                                     ),
-//                                 ),
-//                             ),
-//                         ),
                     ),
                 ),
             ),

@@ -69,7 +69,7 @@ class WeatherCode
 
     public function findDefaultByCode($code)
     {
-        return $this->getEntityRepository()->findBy(
+        return $this->getEntityRepository()->findOneBy(
             array(
                 'code' => $code,
                 'isDefault' => 1,

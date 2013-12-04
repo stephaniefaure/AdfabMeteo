@@ -123,6 +123,18 @@ class WeatherHourlyOccurrence implements InputFilterAwareInterface
         return $this;
     }
 
+    public function getArrayCopy()
+    {
+        return get_object_vars($this);
+    }
+
+    public function getAsJson()
+    {
+        var_dump($this->getArrayCopy());
+//         return json_encode($this->getArrayCopy(), JSON_FORCE_OBJECT);
+        var_dump(json_encode($this->getArrayCopy(), JSON_FORCE_OBJECT));
+    }
+
     /**
      * Populate from an array.
      *
@@ -130,9 +142,6 @@ class WeatherHourlyOccurrence implements InputFilterAwareInterface
      */
     public function populate($data = array())
     {
-        if (isset($data['weatherCode']) && $data['weatherCode'] != null) {
-            $this->weatherCode = $data['weatherCode'];
-        }
         if (isset($data['temperature']) && $data['temperature'] != null) {
             $this->minTemperature = $data['minTemperature'];
         }

@@ -122,6 +122,11 @@ class WeatherLocation implements InputFilterAwareInterface
         return $this;
     }
 
+    public function getQueryArray()
+    {
+        return array((string) $this->getLatitude(), (string) $this->getLongitude());
+    }
+
     public function populate($data = array())
     {
         if (isset($data['city']) && $data['city'] != null) {

@@ -100,7 +100,7 @@ class ModuleOptions extends AbstractOptions
      */
     public function getForecastURL()
     {
-        return $this->$forecastURL;
+        return $this->forecastURL;
     }
 
     /**

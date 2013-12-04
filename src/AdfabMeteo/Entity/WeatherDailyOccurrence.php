@@ -153,6 +153,12 @@ class WeatherDailyOccurrence implements InputFilterAwareInterface
         return $this;
     }
 
+    public function getArrayCopy()
+    {
+        return get_object_vars($this);
+    }
+
+
     /**
      * Populate from an array.
      *
@@ -162,9 +168,6 @@ class WeatherDailyOccurrence implements InputFilterAwareInterface
     {
         if (isset($data['location']) && $data['location'] != null) {
             $this->location = $data['location'];
-        }
-        if (isset($data['weatherCode']) && $data['weatherCode'] != null) {
-            $this->weatherCode = $data['weatherCode'];
         }
         if (isset($data['minTemperature']) && $data['minTemperature'] != null) {
             $this->minTemperature = $data['minTemperature'];

@@ -41,18 +41,11 @@ class WeatherLocation extends EventProvider implements ServiceManagerAwareInterf
      */
     public function request(array $locationData, $numResults = 1, $timezone = false, $popular = true, $category = '')
     {
-        if (empty($locationData) || count($locationData) > 2) {
-            return false;
+        $location = createQueryString($locationData);
+        if (!$location) {
+            return '';
         }
-        $location = '';
-        foreach ($locationData as $data ) {
-            $location .= str_replace(array('-', ' '), '+', $data);
-            if ($data != end($locationData)) {
-                $location .= ',';
-            }
-        }
-
-        // Set Values (default)
+        // Set Optional Parameters Value (default)
         $timezone = ($timezone) ? 'yes' : 'no';
         $popular = ($popular) ? 'yes' : 'no';
         if (!in_array($category, array('Ski', 'Cricket', 'Footbal', 'Golf', 'Fishing'))) {
@@ -68,6 +61,33 @@ class WeatherLocation extends EventProvider implements ServiceManagerAwareInterf
             . '&key=' . $this->getOptions()->getUserKey();
     }
 
+    /**
+     *
+     * @param array $locationData
+     * Can contain city name, city name + country name, US city name + US state name
+     * ip address, latitude + longitude, UK/Canadian/US zipcode
+     * @return string
+     */
+    public function createQueryString(array $locationData)
+    {
+        $location = '';
+        if (empty($locationData) || count($locationData) > 2) {
+            return $location;
+        }
+        foreach ($locationData as $data ) {
+            $location .= str_replace(array('-', ' '), '+', (string) $data);
+            if ($data != end($locationData)) {
+                $location .= ',';
+            }
+        }
+        return $location;
+    }
+
+    /**
+     *
+     * @param string $xmlFileURL
+     * @return multitype:\AdfabMeteo\Entity\WeatherLocation
+     */
     public function parseResultToObjects($xmlFileURL)
     {
         $xmlContent = simplexml_load_file($xmlFileURL, null, LIBXML_NOCDATA);
@@ -84,11 +104,6 @@ class WeatherLocation extends EventProvider implements ServiceManagerAwareInterf
              $locations[] = $location;
         }
         return $locations;
-    }
-
-    public function findTown()
-    {
-        return false;
     }
 
     public function retrieve($data = array())

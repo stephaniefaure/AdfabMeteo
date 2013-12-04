@@ -6,6 +6,7 @@ use Zend\Form\Element;
 use ZfcBase\Form\ProvidesEventsForm;
 use Zend\I18n\Translator\Translator;
 use Zend\ServiceManager\ServiceManager;
+use PlaygroundCore\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 
 class WeatherLocation extends ProvidesEventsForm
 {
@@ -16,6 +17,11 @@ class WeatherLocation extends ProvidesEventsForm
         parent::__construct($name);
 
         $this->setServiceManager($sm);
+        $entityManager = $sm->get('doctrine.entitymanager.orm_default');
+
+        $hydrator = new DoctrineHydrator($entityManager, 'AdfabMeteo\Entity\WeatherLocation');
+        $hydrator->addStrategy('partner', new \PlaygroundCore\Stdlib\Hydrator\Strategy\ObjectStrategy());
+        $this->setHydrator($hydrator);
 
         $this->setAttribute('method', 'post');
 
@@ -25,7 +31,7 @@ class WeatherLocation extends ProvidesEventsForm
         ));
 
         $this->add(array(
-            'type'    => 'Zend\Form\Element\Input',
+            'type'    => 'Zend\Form\Element\Text',
             'name'    => 'city',
             'options' => array(
                 'label' => $translator->translate('Ville', 'adfabmeteo'),
@@ -33,7 +39,7 @@ class WeatherLocation extends ProvidesEventsForm
         ));
 
         $this->add(array(
-            'type'    => 'Zend\Form\Element\Input',
+            'type'    => 'Zend\Form\Element\Text',
             'name'    => 'country',
             'options' => array(
                 'label' => $translator->translate('Pays', 'adfabmeteo'),
@@ -41,7 +47,7 @@ class WeatherLocation extends ProvidesEventsForm
         ));
 
         $this->add(array(
-            'type'    => 'Zend\Form\Element\Input',
+            'type'    => 'Zend\Form\Element\Text',
             'name'    => 'latitude',
             'options' => array(
                 'label' => $translator->translate('Latitude', 'adfabmeteo'),
@@ -49,7 +55,7 @@ class WeatherLocation extends ProvidesEventsForm
         ));
 
         $this->add(array(
-            'type'    => 'Zend\Form\Element\Input',
+            'type'    => 'Zend\Form\Element\Text',
             'name'    => 'longitude',
             'options' => array(
                 'label' => $translator->translate('Longitude', 'adfabmeteo'),

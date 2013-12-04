@@ -9,6 +9,7 @@ use AdfabMeteo\Service\WeatherLocation as WeatherLocationService;
 use Zend\Paginator\Paginator;
 use PlaygroundCore\ORM\Pagination\LargeTablePaginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
+use AdfabMeteo\Entity\WeatherLocation;
 
 class WeatherLocationController extends AbstractActionController
 {
@@ -19,21 +20,60 @@ class WeatherLocationController extends AbstractActionController
 
     public function addAction()
     {
-        return new ViewModel(array(
+        $locations = array();
+        $form = $this->getServiceLocator()->get('adfabmeteo_weatherlocation_form');
+        $form->get('submit')->setLabel('Ajouter');
+        $location = new WeatherLocation();
+        $form->bind($location);
 
+        if ($this->getRequest()->isPost()) {
+            $data = $this->getRequest()->getPost();
+            $form->setData($data);
+            if ($form->isValid()) {
+                $locations = $this->getWeatherLocationService()->retrieve($location->getArrayCopy());
+            } else {
+                foreach ($form->getMessages() as $field => $errMsg) {
+                    $this->flashMessenger()->addMessage($field . ' - ' . current($errMsg));
+                }
+                return $this->redirect()->toRoute('admin/meteo/weather-locations/add');
+            }
+        }
+        return new ViewModel(array(
+            'form' => $form,
+            'locations' => $locations,
+            'flashMessages' => $this->flashMessenger()->getMessages(),
         ));
     }
 
-    public function editAction()
+    public function createAction()
     {
-        return new ViewModel(array(
-
-        ));
+        $params = $this->getEvent()->getRouteMatch()->getParams();
+        if (!$params || !$params['city'] || !$params['country'] || !$params['latitude'] || !$params['longitude']) {
+            $this->flashMessenger()->addMessage('Des informations sont manquantes, le lieu ne peu pas être ajouté');
+            return $this->redirect()->toRoute('admin/meteo/weather-locations/add');
+        }
+        $location = $this->getWeatherLocationService()->create($params);
+        if (!$location) {
+            $this->flashMessenger()->addMessage('Une erreur est survenue durant l\'ajout du lieu');
+            return $this->redirect()->toRoute('admin/meteo/weather-locations/add');
+        }
+        return $this->redirect()->toRoute('admin/meteo/weather-locations/list');
     }
+
 
     public function removeAction()
     {
-
+        $locationId = $this->getEvent()->getRouteMatch()->getParam('locationId');
+        if (!$locationId) {
+            return $this->redirect()->toRoute('admin/meteo/weather-locations/list');
+        }
+        $result = $this->getWeatherLocationService()->remove($locationId);
+        if (!$result) {
+            $this->flashMessenger()->addMessage('Une erreur est survenue pendant la suppression du lieu');
+        } else {
+            $this->flashMessenger()->addMessage('Le lieu a bien été supprimé');
+        }
+        return $this->redirect()->toRoute('admin/meteo/weather-locations/list');
     }
 
     public function listAction()
@@ -48,12 +88,10 @@ class WeatherLocationController extends AbstractActionController
         $paginator->setItemCountPerPage(25);
         $paginator->setCurrentPageNumber($this->getEvent()->getRouteMatch()->getParam('p'));
 
-        $viewModel = new ViewModel();
-        $viewModel->setVariables(array(
+        return new ViewModel(array(
             'locations' => $paginator,
             'flashMessages' => $this->flashMessenger()->getMessages(),
         ));
-        return $viewModel;
     }
 
     public function getWeatherLocationService()

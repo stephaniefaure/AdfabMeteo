@@ -183,25 +183,23 @@ return array(
                                             ),
                                         ),
                                     ),
-                                    'remove' => array(
+                                    'create' => array(
                                         'type' => 'Segment',
                                         'options' => array(
-                                            'route' => '/remove/:codeId',
+                                            'route' => '/create/:city/:country[/:region]/:latitude/:longitude',
                                             'defaults' => array(
                                                 'controller' => 'weatherlocation_admin_controller',
-                                                'action' => 'remove',
-                                                'locationId' => 0,
+                                                'action' => 'create',
                                             ),
                                         ),
                                     ),
-                                    'edit' => array(
+                                    'remove' => array(
                                         'type' => 'Segment',
                                         'options' => array(
-                                            'route' => '/edit/:codeId',
+                                            'route' => '/remove/:locationId',
                                             'defaults' => array(
                                                 'controller' => 'weatherlocation_admin_controller',
-                                                'action' => 'edit',
-                                                'locationId' => 0,
+                                                'action' => 'remove',
                                             ),
                                         ),
                                     ),

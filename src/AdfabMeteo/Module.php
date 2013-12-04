@@ -136,6 +136,13 @@ class Module
                     $translator = $sm->get('translator');
                     $form = new Form\Admin\FileImport(null, $sm, $translator);
                     return $form;
+                },
+                'adfabmeteo_weatherlocation_form' => function ($sm) {
+                    $translator = $sm->get('translator');
+                    $form = new Form\Admin\WeatherLocation(null, $sm, $translator);
+                    $location = new Entity\WeatherLocation();
+                    $form->setInputFilter($location->getInputFilter());
+                    return $form;
                 }
             ),
         );

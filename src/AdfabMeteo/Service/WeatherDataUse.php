@@ -24,7 +24,6 @@ class WeatherDataUse extends EventProvider implements ServiceManagerAwareInterfa
     protected $serviceManager;
 
 
-
     public function getWeatherDailyOccurrenceMapper()
     {
         if (!$this->weatherDailyOccurrenceMapper) {

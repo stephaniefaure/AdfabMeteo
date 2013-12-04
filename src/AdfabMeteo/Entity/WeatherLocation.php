@@ -21,7 +21,7 @@ class WeatherLocation implements InputFilterAwareInterface
     protected $inputFilter;
 
     public static $countries = array(
-    	'France',
+    	'france',
     );
 
     /**
@@ -36,18 +36,23 @@ class WeatherLocation implements InputFilterAwareInterface
      */
     protected $country;
 
+    /**     *
+     * @ORM\Column(type="string")
+     */
+    protected $region;
+
     /**
      * @ORM\Column(type="string")
      */
     protected $city;
 
     /**
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="decimal",  precision=8, scale=5)
      */
     protected $latitude;
 
     /**
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="decimal",  precision=8, scale=5)
      */
     protected $longitude;
 
@@ -84,6 +89,17 @@ class WeatherLocation implements InputFilterAwareInterface
         return $this;
     }
 
+    public function getRegion()
+    {
+        return $this->region;
+    }
+
+    public function setRegion($region)
+    {
+        $this->region = $region;
+        return $this;
+    }
+
     public function getLatitude()
     {
         return $this->latitude;
@@ -114,12 +130,20 @@ class WeatherLocation implements InputFilterAwareInterface
         if (isset($data['country']) && $data['country'] != null) {
             $this->country = $data['country'];
         }
+        if (isset($data['region']) && $data['region'] != null) {
+            $this->region = $data['region'];
+        }
         if (isset($data['latitude']) && $data['latitude'] != null) {
             $this->latitude = $data['latitude'];
         }
         if (isset($data['longitude']) && $data['longitude'] != null) {
             $this->longitude = $data['longitude'];
         }
+    }
+
+    public function getArrayCopy()
+    {
+        return get_object_vars($this);
     }
 
     public function setInputFilter(InputFilterInterface $inputFilter)
@@ -137,26 +161,25 @@ class WeatherLocation implements InputFilterAwareInterface
 
             $inputFilter->add($factory->createInput(array(
                 'name' => 'city',
-                'required' => true,
+                'required' => false,
                 'filters'  => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
                 ),
                 'validators' => array(
-                    array('name' => 'NotEmpty',),
                     array('name' => 'StringLength', 'options' => array('min'=>1, 'max' => 255)),
                 ),
             )));
 
             $inputFilter->add($factory->createInput(array(
-                'name' => 'city',
-                'required' => true,
+                'name' => 'country',
+                'required' => false,
                 'filters'  => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
+                    array('name' => 'StringToLower', 'options' => array('encoding' => 'UTF-8')),
                 ),
                 'validators' => array(
-                    array('name' => 'NotEmpty',),
                     array('name' => 'StringLength', 'options' => array('min'=>1, 'max' => 255)),
                     array(
                         'name' => 'InArray',
@@ -164,6 +187,22 @@ class WeatherLocation implements InputFilterAwareInterface
                             'haystack' => self::$countries,
                         ),
                     ),
+                ),
+            )));
+
+            $inputFilter->add($factory->createInput(array(
+                'name' => 'latitude',
+                'required' => false,
+                'validators' => array(
+                    array('name' => 'Float'),
+                ),
+            )));
+
+            $inputFilter->add($factory->createInput(array(
+                'name' => 'longitude',
+                'required' => false,
+                'validators' => array(
+                    array('name' => 'Float'),
                 ),
             )));
 

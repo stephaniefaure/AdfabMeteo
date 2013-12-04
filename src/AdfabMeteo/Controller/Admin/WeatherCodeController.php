@@ -113,12 +113,11 @@ class WeatherCodeController extends AbstractActionController
             return $this->redirect()->toRoute('admin/meteo/weather-codes/list');
         }
         $result = $this->getWeatherCodeService()->remove($codeId);
-        if ($result) {
-            $this->flashMessenger()->addMessage('L\'état du ciel personnalisé a bien été supprimé');
-        } else {
+        if (!$result) {
             $this->flashMessenger()->addMessage('Une erreur est survenue pendant la suppression de l\'état du ciel personnalisé');
+        } else {
+            $this->flashMessenger()->addMessage('L\'état du ciel personnalisé a bien été supprimé');
         }
-
         return $this->redirect()->toRoute('admin/meteo/weather-codes/list');
     }
 
@@ -151,7 +150,6 @@ class WeatherCodeController extends AbstractActionController
                     $this->flashMessenger()->addMessage('les données du fichier n\'ont pas pu être importées');
                 }
             } else {
-                var_dump($form->getmessages());
                 foreach ($form->getMessages() as $field => $errMsg) {
                     $this->flashMessenger()->addMessage($field . ' - ' . current($errMsg));
                 }

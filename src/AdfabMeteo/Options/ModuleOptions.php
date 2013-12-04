@@ -45,7 +45,7 @@ class ModuleOptions extends AbstractOptions
      */
     public function setMediaPath($media_path)
     {
-        $this->media_path = $media_path;
+        $this->media_path = trim($media_path);
 
         return $this;
     }
@@ -65,7 +65,7 @@ class ModuleOptions extends AbstractOptions
      */
     public function setMediaUrl($media_url)
     {
-        $this->media_url = $media_url;
+        $this->media_url = trim($media_url);
 
         return $this;
     }
@@ -83,7 +83,7 @@ class ModuleOptions extends AbstractOptions
      */
     public function getUserKey()
     {
-        return $this->$userKey;
+        return $this->userKey;
     }
 
     /**
@@ -91,7 +91,7 @@ class ModuleOptions extends AbstractOptions
      */
     public function setUserKey($userKey)
     {
-        $this->userKey = $userKey;
+        $this->userKey = trim($userKey);
         return $this;
     }
 
@@ -108,7 +108,7 @@ class ModuleOptions extends AbstractOptions
      */
     public function setForecastURL($forecastURL)
     {
-        $this->forecastURL = $forecastURL;
+        $this->forecastURL = trim($forecastURL);
         return $this;
     }
 
@@ -125,7 +125,7 @@ class ModuleOptions extends AbstractOptions
      */
     public function setPastURL($pastURL)
     {
-        $this->pastURL = $pastURL;
+        $this->pastURL = trim($pastURL);
         return $this;
     }
 
@@ -142,7 +142,7 @@ class ModuleOptions extends AbstractOptions
      */
     public function setLocationURL($locationURL)
     {
-        $this->locationURL = $locationURL;
+        $this->locationURL = trim($locationURL);
         return $this;
     }
 

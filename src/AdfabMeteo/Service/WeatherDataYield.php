@@ -5,12 +5,18 @@ namespace AdfabMeteo\Service;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 use ZfcBase\EventManager\EventProvider;
+use AdfabMeteo\Options\ModuleOptions;
 
 use AdfabMeteo\Mapper\WeatherDailyOccurrence as WeatherDailyOccurrenceMapper;
 use AdfabMeteo\Mapper\WeatherHourlyOccurrence as WeatherHourlyOccurrenceMapper;
 
 class WeatherDataYield extends EventProvider implements ServiceManagerAwareInterface
 {
+    /**
+     * @var ModuleOptions
+     */
+    protected $options;
+
     /**
      * @var WeatherDailyOccurrenceMapper
      */

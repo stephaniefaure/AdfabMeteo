@@ -1,5 +1,5 @@
 <?php
-namespace AdfabMeteoTest;
+namespace PlaygroundWeatherTest;
 
 use Zend\Loader\AutoloaderFactory;
 use Zend\Mvc\Service\ServiceManagerConfig;

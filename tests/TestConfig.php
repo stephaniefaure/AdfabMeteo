@@ -10,7 +10,7 @@ return array(
     	'ZfcBase',
    		'PlaygroundCore',
         'PlaygroundDesign',
-        'AdfabMeteo',
+        'PlaygroundWeather',
     ),
     'module_listener_options' => array(
         'config_glob_paths'    => array(

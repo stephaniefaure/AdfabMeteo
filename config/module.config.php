@@ -2,14 +2,14 @@
 return array(
     'doctrine' => array(
         'driver' => array(
-            'adfabmeteo_entity' => array(
+            'playgroundweather_entity' => array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => __DIR__ . '/../src/AdfabMeteo/Entity'
+                'paths' => __DIR__ . '/../src/PlaygroundWeather/Entity'
             ),
             'orm_default' => array(
                 'drivers' => array(
-                    'AdfabMeteo\Entity' => 'adfabmeteo_entity'
+                    'PlaygroundWeather\Entity' => 'playgroundweather_entity'
                 )
             )
         )
@@ -30,24 +30,24 @@ return array(
                 'type' => 'phpArray',
                 'base_dir' => __DIR__ . '/../language',
                 'pattern' => '%s.php',
-                'text_domain' => 'adfabmeteo'
+                'text_domain' => 'playgroundweather'
             )
         )
     ),
     'controllers' => array(
         'invokables' => array(
-            'adfabmeteo_controller'             => 'AdfabMeteo\Controller\Frontend\AdfabMeteoController',
-            'weatheroccurrence_controller'      => 'AdfabMeteo\Controller\Frontend\WeatherOccurrenceController',
-            'adfabmeteo_admin_controller'       => 'AdfabMeteo\Controller\Admin\AdfabMeteoController',
-            'weathercode_admin_controller'      => 'AdfabMeteo\Controller\Admin\WeatherCodeController',
-            'weatherlocation_admin_controller'  => 'AdfabMeteo\Controller\Admin\WeatherLocationController',
+            'playgroundweather_controller'             => 'PlaygroundWeather\Controller\Frontend\PlaygroundWeatherController',
+            'weatheroccurrence_controller'      => 'PlaygroundWeather\Controller\Frontend\WeatherOccurrenceController',
+            'playgroundweather_admin_controller'       => 'PlaygroundWeather\Controller\Admin\PlaygroundWeatherController',
+            'weathercode_admin_controller'      => 'PlaygroundWeather\Controller\Admin\WeatherCodeController',
+            'weatherlocation_admin_controller'  => 'PlaygroundWeather\Controller\Admin\WeatherLocationController',
         ),
     ),
     'view_helpers' => array(
         'invokables' => array(
-            'forecastWidget' => 'AdfabMeteo\View\Helper\ForecastWidget',
-            'weatherTableWidget' => 'AdfabMeteo\View\Helper\WeatherTableWidget',
-            'weatherMapWidget' => 'AdfabMeteo\View\Helper\WeatherMapWidget',
+            'forecastWidget' => 'PlaygroundWeather\View\Helper\ForecastWidget',
+            'weatherTableWidget' => 'PlaygroundWeather\View\Helper\WeatherTableWidget',
+            'weatherMapWidget' => 'PlaygroundWeather\View\Helper\WeatherMapWidget',
         ),
     ),
     'router' => array(
@@ -61,7 +61,12 @@ return array(
                     'forecast' => array(
                         'type' => 'Segment',
                         'options' => array(
-                            'route' => '/weather/:locationId/:date',
+                            'route' => '/weather/:locationId/:start[/:end]',
+                            'constraints' => array(
+                                ':locationId' => '[0-9]+',
+                                ':start' => '[0-9]{4}\-[0-9]{2}\-[0-9]{2}',
+                                ':end' => '[0-9]{4}\-[0-9]{2}\-[0-9]{2}',
+                            ),
                             'defaults' => array(
                                 'controller' => 'weatheroccurrence_controller',
                             ),
@@ -76,7 +81,7 @@ return array(
                         'options' => array(
                             'route' => 'meteo',
                             'defaults' => array(
-                                'controller' => 'adfabmeteo_controller',
+                                'controller' => 'playgroundweather_controller',
                                 'action' => 'index',
                             )
                         ),
@@ -90,7 +95,7 @@ return array(
                         'options' => array(
                             'route' => '/meteo',
                             'defaults' => array(
-                                'controller' => 'adfabmeteo_admin_controller',
+                                'controller' => 'playgroundweather_admin_controller',
                                 'action' => 'index',
                             ),
                         ),
@@ -141,6 +146,9 @@ return array(
                                         'type' => 'Segment',
                                         'options' => array(
                                             'route' => '/remove/:codeId',
+                                            'constraints' => array(
+                                                ':codeId' => '[0-9]+',
+                                            ),
                                             'defaults' => array(
                                                 'controller' => 'weathercode_admin_controller',
                                                 'action' => 'remove',
@@ -152,6 +160,9 @@ return array(
                                         'type' => 'Segment',
                                         'options' => array(
                                             'route' => '/edit/:codeId',
+                                            'constraints' => array(
+                                                ':codeId' => '[0-9]+',
+                                            ),
                                             'defaults' => array(
                                                 'controller' => 'weathercode_admin_controller',
                                                 'action' => 'edit',
@@ -197,6 +208,13 @@ return array(
                                         'type' => 'Segment',
                                         'options' => array(
                                             'route' => '/create/:city/:country[/:region]/:latitude/:longitude',
+                                            'constraints' => array(
+                                                ':city' => '[a-zA-Z0-9_\-]+',
+                                                ':country' => '[a-zA-Z0-9_\-]+',
+                                                ':region' => '[a-zA-Z0-9_\-]*',
+                                                ':latitude' => '[0-9]{1-3}[0-9]+',
+                                                ':longitude' => '[0-9]{1-3}[0-9]+',
+                                            ),
                                             'defaults' => array(
                                                 'controller' => 'weatherlocation_admin_controller',
                                                 'action' => 'create',
@@ -207,6 +225,9 @@ return array(
                                         'type' => 'Segment',
                                         'options' => array(
                                             'route' => '/remove/:locationId',
+                                            'constraints' => array(
+                                                ':locationId' => '[0-9]+',
+                                            ),
                                             'defaults' => array(
                                                 'controller' => 'weatherlocation_admin_controller',
                                                 'action' => 'remove',
